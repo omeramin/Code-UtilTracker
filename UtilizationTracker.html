@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div class="jumbotron" align="center" style="background-color:#1abc9c">
+        <h1>Simple Utilization tracker</h1>
+        <p>Find the required utilzation for the remainder of the fiscal year to meet your core priority target</p>
+    </div>
+
+    <div class="container">
+        <div class="row">
+
+            
+
+            <div class="col-sm-6">
+                    <label class="control-label" for="currentUtil">Current Utilization (%)</label>
+                    <input type="number" class="form-control" id="currentUtil" onkeyup="CalculateTarget()" />
+
+            </div>
+
+            <div class="col-sm-6">
+                    <label class="control-label" for="targetUtil">Target Utilization  (%)</label>
+                    <input type="number" class="form-control" id="targetUtil" onkeyup="CalculateTarget()" value="74.6"/>
+
+            </div>
+        </div>
+        
+        <br/>
+        <br/>
+        <b>Fiscal year start: </b> 07-01-2017
+        <br />
+        <b>Fiscal year end: </b> 06-30-2018
+        <br />
+
+        <br />
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+
+
+
+        <h4>Days till end of fiscal year: <span id="remFiscalDays"></span></h4>
+        <h4>Working days remaining: <span id="remWorkingDays"></span></h4>
+        <h3>Average utilization required meet target (%): <span id="requiredUtil" style="background-color:#1abc9c"></span></h3>
+        <br />
+        <div id="warningMsg"></div>
+
+        
+
+    </div>
+    <script>
+        function CalculateTarget() {
+
+            var currentUtil = document.getElementById("currentUtil").value;
+            var targetUtil = document.getElementById("targetUtil").value;
+
+            var fiscalYearStart = new Date("2017","6", "1");
+            var fiscalYearEnd = new Date("2018","5", "30");
+            
+            var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+            var today = new Date();
+
+            var daysTillEnd = Math.round(Math.abs(today.getTime() - fiscalYearEnd.getTime()) / oneDay);
+
+            var hoursWorked = (365 - daysTillEnd) / 7 * 40 * currentUtil / 100;
+
+            var targetHours = 365 / 7 * 40 * targetUtil / 100;
+
+
+            var remainingHoursToBeWorked = targetHours - hoursWorked;
+
+
+            document.getElementById("remFiscalDays").innerHTML = daysTillEnd;
+            document.getElementById("remWorkingDays").innerHTML = (daysTillEnd - ((daysTillEnd/7) * 2)).toFixed(0);
+            document.getElementById("requiredUtil").innerHTML = ((remainingHoursToBeWorked / (daysTillEnd - ((daysTillEnd/7) * 2))) / 8 * 100).toFixed(2);
+
+
+            if( ((remainingHoursToBeWorked / (daysTillEnd - ((daysTillEnd/7) * 2))) / 8 * 100) > (targetUtil + 5) ){
+                document.getElementById("warningMsg").innerHTML = "Oops! Looks like you have a tough climb ahead. Talk to your manager and make sure you have a plan to make up or address the gap."
+            }
+            else{
+                document.getElementById("warningMsg").innerHTML = "";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
