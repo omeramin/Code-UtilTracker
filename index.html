@@ -21,8 +21,6 @@
     <div class="container">
         <div class="row">
 
-            
-
             <div class="col-sm-6">
                     <label class="control-label" for="currentUtil">Current Utilization (%)</label>
                     <input type="text" class="form-control" id="currentUtil" onkeyup="CalculateTarget()" />
@@ -32,6 +30,16 @@
             <div class="col-sm-6">
                     <label class="control-label" for="targetUtil">Target Utilization  (%)</label>
                     <input type="text" class="form-control" id="targetUtil" onkeyup="CalculateTarget()" value="74.6"/>
+
+            </div>
+            
+        </div>
+
+        <div class="row">
+            
+            <div class="col-sm-6">
+                <label class="control-label" for="vacationDays">Vacation\OOF days prior to fiscal end</label>
+                <input type="text" class="form-control" id="vacationDays" onkeyup="CalculateTarget()" value="4"/>
 
             </div>
         </div>
@@ -67,6 +75,7 @@
 
             var currentUtil = document.getElementById("currentUtil").value;
             var targetUtil = document.getElementById("targetUtil").value;
+            var vacationDays = document.getElementById("vacationDays").value;
 
             var fiscalYearStart = new Date("2017","6", "1");
             var fiscalYearEnd = new Date("2018","5", "30");
@@ -76,7 +85,7 @@
 
             var daysTillEnd = Math.round(Math.abs(today.getTime() - fiscalYearEnd.getTime()) / oneDay);
 
-            var hoursWorked = (365 - daysTillEnd) / 7 * 40 * currentUtil / 100;
+            var hoursWorked = (365 - daysTillEnd - vacationDays) / 7 * 40 * currentUtil / 100;
 
             var targetHours = 365 / 7 * 40 * targetUtil / 100;
 
@@ -88,8 +97,7 @@
             document.getElementById("remWorkingDays").innerHTML = (daysTillEnd - ((daysTillEnd/7) * 2)).toFixed(0);
             document.getElementById("requiredUtil").innerHTML = ((remainingHoursToBeWorked / (daysTillEnd - ((daysTillEnd/7) * 2))) / 8 * 100).toFixed(2);
 
-
-            if( ((remainingHoursToBeWorked / (daysTillEnd - ((daysTillEnd/7) * 2))) / 8 * 100) > (targetUtil + 5) ){
+            if( (remainingHoursToBeWorked / (daysTillEnd - ((daysTillEnd/7) * 2)) / 8 * 100) > Number(targetUtil) + 5 ){
                 document.getElementById("warningMsg").innerHTML = "Oops! Looks like you have a tough climb ahead. Talk to your manager and make sure you have a plan to make up or address the gap."
             }
             else{
