@@ -77,8 +77,9 @@
             var targetUtil = document.getElementById("targetUtil").value;
             var vacationDays = document.getElementById("vacationDays").value;
 
-            var fiscalYearStart = new Date("2018","7", "1");
-            var fiscalYearEnd = new Date("2019","6", "30");
+            //JavaScript counts months from 0 to 11
+            var fiscalYearStart = new Date("2018","6", "1");
+            var fiscalYearEnd = new Date("2019","5", "30");
             
             var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
             var today = new Date();
