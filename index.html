@@ -101,6 +101,9 @@
             if( (remainingHoursToBeWorked / (daysTillEnd - ((daysTillEnd/7) * 2)) / 8 * 100) > Number(targetUtil) + 5 ){
                 document.getElementById("warningMsg").innerHTML = "Oops! Looks like you have a tough climb ahead. Talk to your manager and make sure you have a plan to make up or address the gap."
             }
+            else if (remainingHoursToBeWorked < 0 ){
+                document.getElementById("warningMsg").innerHTML = "You have already hit your target for the year. Congrats! Please keep logging labor so that your contract consumption is not affected."
+            }
             else{
                 document.getElementById("warningMsg").innerHTML = "";
             }
